@@ -1,0 +1,353 @@
+{
+	"info": {
+		"_postman_id": "a96c3109-8f35-4c85-a287-92429b0d40e1",
+		"name": "12_Booking APi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41326644"
+	},
+	"item": [
+		{
+			"name": "CreateToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const tokenId = response.token;\r",
+							"console.log(\"my response is : + tokenId\")\r",
+							"pm.variables.set(\"tokenID\",tokenId)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{username}}\",\r\n    \"password\" : \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllBooking",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{{username}}\",\r\n    \"password\" : \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewBooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"const booking_id = response.bookingid;\r",
+							"console.log(\"my response is : + booking_id\")\r",
+							"pm.variables.set(\"bookingID\",booking_id)\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\" : \"priyanka\",\r\n    \"lastname\" : \"londhe\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetParticularBookingId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{bookingID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{bookingID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//generate a token using auth API and fetchthe token id from the response\r",
+							"pm.sendRequest({\r",
+							"        method: 'POST',\r",
+							"        url: pm.environment.get(\"baseURL\")+'/auth',\r",
+							"        header:{\r",
+							"            'Content-Type' : 'application/json'\r",
+							"        },\r",
+							"        body:{\r",
+							"            mode: 'raw',\r",
+							"            //javascript object to json\r",
+							"            raw: JSON.stringify({\r",
+							"                \"username\": pm.environment.get(\"username\"),\r",
+							"                \"password\": pm.environment.get(\"password\")\r",
+							"            })\r",
+							"        }\r",
+							"\r",
+							"}, function(error, response){\r",
+							"    if(error){\r",
+							"        console.log(error);\r",
+							"    }\r",
+							"    else{\r",
+							"        //JSON to JS Object: \r",
+							"       const responseBody = JSON.parse(response.text());\r",
+							"        const tokenId =  responseBody.token;\r",
+							"        console.log(\"new token id : \"+ tokenId);\r",
+							"        pm.variables.set(\"new_token_id\", tokenId);\r",
+							"    }\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{new_token_id}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json'",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\" : \"Pravin\",\r\n    \"lastname\" : \"londhe\",\r\n    \"totalprice\" : 222,\r\n    \"depositpaid\" : false,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{bookingID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{bookingID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// generate a token using auth api and fetching token id from response\r",
+							"pm.sendRequest({\r",
+							"    method:'POST',\r",
+							"    url: pm.variables.get(\"baseUrl\")+'/auth',\r",
+							"    header :\r",
+							"    {\r",
+							"        'Content-Type' : 'application/json',\r",
+							"        \r",
+							"    },\r",
+							"    body:\r",
+							"    {\r",
+							"        mode:'raw',\r",
+							"        //cannot copy paste the json directly as in postman we use javascript so\r",
+							"        //javascript object to json.\r",
+							"       // stringify is reverse of parse method\r",
+							"        raw : JSON.stringify(\r",
+							"            {\"username\" : pm.environment.get(\"username\"),\r",
+							"            \"password\": pm.environment.get(\"password\")\r",
+							"     //username and password is javascript object\r",
+							"     } )\r",
+							"        \r",
+							"  },function(error,response)//if error is there it will give to error variable ,same with response\r",
+							"  {\r",
+							"    if (error){\r",
+							"        console.log(error)\r",
+							"    }\r",
+							"   //we will receive json format in response \r",
+							"   else {\r",
+							"   const responsebody = JSON.parse(response.text());\r",
+							"    const token_id = responsebody.token;\r",
+							"   console.log(\"token is : \"+token_id)\r",
+							"   pm.variables.set('new_tokenID',token_id)\r",
+							"\r",
+							" }\r",
+							"  }\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{new_tokenID}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/booking/{{bookingID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{bookingID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

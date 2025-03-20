@@ -1,0 +1,21 @@
+{
+	"id": "206ca9a0-7ad6-4732-baa5-f20cc2394a3f",
+	"name": "gorest_env_workflow",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "https://gorest.co.in",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tokenID",
+			"value": "a9dd39561a7d284b50e5bcd8a0022562d1427d0a10e656c58a91764a99c2eef0",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-03-11T09:49:25.055Z",
+	"_postman_exported_using": "Postman/11.36.1"
+}
